@@ -1,0 +1,29 @@
+{% extends './layout.html' %}
+{% block title %}{{ 'Editing Author ' + author.first_name + ' - Demo App'}}{% endblock %}
+{% block body %}
+    <div class="mb-5 mt-5">
+        <div class="container flex-center mt-0">
+            <div class="row mt-0 wow fadeIn">
+                <div class="col">
+                    <form class="text-center border border-light p-5" action="/portfolio/books_app/authors/update/{{ author.id }}" method="POST">
+                        <div class="form-row mb-4">
+                            <div class="col">
+                                <h2 class="mb-3">Edit Author</h2>
+                            </div>
+                        </div>
+                        <div class="form-row mb-4">
+                            <input type="text" class="form-control mb-4" name="fname" value="{{ author.first_name }}">
+                            <input type="text" class="form-control mb-4" name="lname" value="{{ author.last_name }}">
+                        </div>
+                        <div class="form-row mb-2">
+                            <textarea class="form-control mb-2" rows="4" name="notes">{{ author.notes }}</textarea>
+                            <button class="btn btn-info" type="submit">Update</button>
+                            <a class="btn btn-warning" href="/portfolio/books_app/authors/{{ author.id }}">Cancel</a>  
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

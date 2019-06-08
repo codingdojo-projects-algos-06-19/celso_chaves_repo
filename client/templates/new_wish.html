@@ -1,0 +1,27 @@
+{% extends './layout.html' %}
+{% block title %}Make a wish - Demo App{% endblock %}
+{% block body %}
+    <div class="mb-5 mt-5">
+        <div class="container flex-center mt-0">
+            <div class="row mt-0 wow fadeIn">
+                <div class="col">
+                    <form class="text-center border border-light p-5" action="/portfolio/wishes_app/add_wish" method="POST">
+                        <div class="form-row mb-4">
+                            <div class="col">
+                                <h2 class="mb-5">Hello {{ logged_in_user.first_name }}! Make a Wish</h2>
+                            </div>
+                        </div>
+                        <div class="form-row mb-4">
+                            <input type="text" class="form-control mb-4" name="title" placeholder="I wish for...">
+                        </div>
+                        <div class="form-row mb-4">
+                            <textarea class="form-control mb-4" rows="4" name="description" placeholder="Description"></textarea>
+                            <a href="/portfolio/wishes_app/wishes" class="btn btn-secondary">Cancel</a>  
+                            <button class="btn btn-info" type="submit">Submit</button>  
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends './layout.html' %}
+{% block title %}Register - Demo App{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="container flex-center">
+            <div class="row pt-2">
+                <div class="col-lg-12">
+                    <div class="form-row mb-4">
+                        <form class="text-center border border-light p-5" action="/portfolio/create_user" method="POST">                      
+                            <div class="form-row mb-4">
+                                <div class="col-sm-12">
+                                    <h2 class="mb-5">Register</h2>
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" name="fname" placeholder="First name">
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" name="lname" placeholder="Last name">
+                                </div>
+                            </div>
+                            <input type="text" class="form-control mb-4" name="email" placeholder="E-mail">
+                            <input type="password" class="form-control mb-4" name="password" placeholder="Password">
+                            <input type="password" class="form-control" name="password2" placeholder="Confirm Password">
+                            <small class="form-text text-muted white-text mb-4">
+                                8 characters and must contain a number, <br />a special character, upper and lowercase.
+                            </small>
+                            <button class="btn btn-info my-4 btn-block" type="submit">Register</button>                            
+                            <hr style="border-color: #ffffff">
+                            <small><p> By clicking <em>Register</em> you agree to our <a style="text-decoration: underline;" data-toggle="modal" data-target="#terms-modal">terms of service</a></p></small>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    {% include 'terms.html' %}
+{% endblock %}

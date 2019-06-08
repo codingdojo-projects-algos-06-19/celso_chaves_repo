@@ -1,0 +1,42 @@
+body,
+header,
+.view {
+	height: 100%;
+}
+
+/* Carousel*/
+.carousel,
+.carousel-item,
+.carousel-item.active {
+	height: 100%;
+}
+
+.carousel-inner {
+	height: 100%;
+}
+
+@media (min-width: 800px) and (max-width: 850px) {
+	.navbar:not(.top-nav-collapse) {
+		background: #1c2331 !important;
+	}
+}
+
+ .modal-footer {
+            margin-top: 1rem;
+        }
+       
+            .flex-center {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100%;
+        }
+#time-counter {
+  font-size: 2rem; 
+}
+.nav-tabs .nav-link.active a {
+  color: #000000;
+}
+.nav-tabs a {
+  color: #ffffff;
+}

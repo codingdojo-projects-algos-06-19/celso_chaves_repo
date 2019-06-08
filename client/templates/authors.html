@@ -1,0 +1,132 @@
+{% extends './layout.html' %}
+{% block title %}Author's List - Demo App{% endblock %}
+{% block body %}
+    <div class="container pt-3">
+        <div class="row">
+            <div class="col text-center">
+                {% if 'user_id' in session %}
+                <button class="btn btn-info" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="addUserCollapse">Add Author <i class="fas fa-angle-down ml-2 "></i></button>
+                <a href="/portfolio/books_app/books" class="btn btn-info">Books's List</a>
+                {% else %}
+                <button class="btn btn-info" type="button" disabled >Register or signin to add Authors <i class="fas fa-angle-down ml-2 "></i></button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="collapse multi-collapse" id="addUserCollapse">
+        <div class="container flex-center">
+            <div class="row pt-2 mt-0">
+                <div class="col">
+                    <form class="text-center border border-light p-5" action="/portfolio/books_app/authors/add" method="POST">                      
+                        <div class="form-row mb-4">
+                            <div class="col">
+                                <h2 class="mb-3">Add a Author</h2>
+                            </div>
+                        </div>
+                        <div class="form-row mb-4">
+                            <input type="text" class="form-control mb-4" name="fname" placeholder="First Name">
+                            <input type="text" class="form-control mb-4" name="lname" placeholder="Last Name">
+                        </div>
+                        <div class="form-row mb-2">
+                            <textarea class="form-control mb-2" rows="4" name="notes" placeholder="Notes"></textarea>
+                            <button class="btn btn-info" type="submit">Add</button>  
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row wow fadeIn">
+            <div class="col-sm-12 mt-5">
+                <h1 class="text-center mb-3">Author's List</h1>
+                <div style="overflow: auto">
+                    <div class="text-center">
+                        <table class="table table-striped table-bordered mb-5">
+                            <thead class="info-color white-text">
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for author in author_list %}
+                                <tr>
+                                    <td scope="col">{{ author['id']}}</td>
+                                    <td scope="col">{{ author['first_name'] + ' ' + author['last_name'] }}</td>
+                                    <td scope="col">
+                                        <div class="btn-group" role="group" aria-label="actions">
+                                            <form action="/portfolio/books_app/authors/{{ author.id }}" method="GET">
+                                                <button type="submit" class="btn btn-info btn-sm px-2 mr-2"><i class="fas fa-eye" aria-hidden="true"></i></button>                                           
+                                            </form>
+                                        {% if 'user_id' in session %}
+                                            <form action="/portfolio/books_app/authors/edit/{{ author.id }}" method="GET">
+                                                <input type="hidden" name="id" value="{{ author.id }}">
+                                                <button id="modalActivate2" type="button" class="btn btn-primary btn-sm px-2 mr-2" data-toggle="modal" data-target="#author-edit-modal-{{ author.id }}"><i class="fas fa-edit" aria-hidden="true"></i></button>
+                                            </form>
+                                            <button id="modalActivate" type="button" class="btn btn-danger btn-sm px-2 mr-2" data-toggle="modal" data-target="#author-delete-modal-{{ author.id }}"><i class="fas fa-trash" aria-hidden="true"></i></button>
+                                        </div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+    {% for author in author_list %}
+    <div class="modal fade right" id="author-delete-modal-{{ author.id }}" tabindex="-1" role="dialog" aria-labelledby="author-delete-modal-Label-{{ author.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="author-delete-modal-Label-{{ author.id }}">Deleting author <strong>{{ author.first_name + ' ' + author.last_name }}</strong>...</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to the delete this author?
+                </div>
+                <div class="modal-footer">
+                    <form action="/portfolio/books_app/authors/delete/{{ author.id }}" method="POST">
+                        <button type="submit" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade right" id="author-edit-modal-{{ author.id }}" tabindex="-1" role="dialog" aria-labelledby="author-edit-modal-Label-{{ author.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form class="text-center border border-light" action="/portfolio/books_app/authors/update/{{ author.id }}" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="author-edit-modal-Label-{{ author.id }}">Editing author <strong>{{ author.first_name + ' ' + author.last_name }}</strong></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-row mb-2 mt-2">
+                            <input type="text" class="form-control mb-4" name="fname" value="{{ author.first_name }}">
+                            <input type="text" class="form-control mb-4" name="lname" value="{{ author.last_name }}">
+                        </div>
+                        <div class="form-row mb-2">
+                            <textarea class="form-control mb-2" rows="4" name="notes">{{ author.notes }}</textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="id" value="{{ author.id }}">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

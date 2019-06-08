@@ -1,0 +1,34 @@
+{% extends './main_layout.html' %}
+{% block title %}Portfolio - Celso Chaves{% endblock %}
+{% block body %}
+<div class="container mt-5">
+        <div class="row mb-4 wow fadeIn">
+            <div class="col-md-6 mb-4">
+                <div class="card wow slideInLeft">
+                    <div class="view overlay">
+                        <img src="/static/img/python-flask.jpg" class="card-img-top" alt="">
+                        <a href="/portfolio/books_app/books"><div class="mask rgba-white-slight"></div></a>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">Python Flask App: Books and Authors</h4>
+                        <p class="card-text">This app has many features including login and registration and CRUD operations.</p>
+                        <a href="/portfolio/books_app/books" class="btn btn-primary btn-md">Check it out<i class="fas fa-play ml-2"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card wow slideInRight">
+                    <div class="view overlay">
+                        <img src="/static/img/python-logo@2x.png" class="card-img-top" alt="New demo apps comming soon">
+                        <a href="/portfolio"><div class="mask rgba-white-slight"></div></a>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">Comming Soon!</h4>
+                        <p class="card-text">I'll be adding more demo apps soon</p>
+                        <a href="/portfolio" target="_blank" class="btn btn-primary btn-md"> <i class="fas fa-spinner fa-pulse"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

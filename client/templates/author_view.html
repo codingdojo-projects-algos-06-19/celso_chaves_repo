@@ -1,0 +1,49 @@
+{% extends './layout.html' %}
+{% block title %}{{ author.first_name + ' ' + author.last_name + ' - Demo App' }}{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row mt-5 mb-4 wow fadeIn">
+            <div class="col-md-6 mb-4">
+                <img src="https://picsum.photos/600/400" class="img-fluid z-depth-1-half" alt="">
+            </div>
+            <div class="col-md-6 mb-4">
+                <h3 class="h3 mb-3">{{ author.first_name + ' ' + author.last_name }}</h3>
+                <h6 class="small mb-3">Author id: {{ author.id }}</h6>
+                <p>{{ author.notes }}</p>
+                <div class="mb-4">
+            {% if 'user_id' in session %}
+                    <a class="btn btn-sm btn-primary" href="/portfolio/books_app/authors/edit/{{ author.id }}">Edit </a><a class="btn btn-sm btn-info" href="/portfolio/books_app/authors">Back to list</a>
+            {% else %}
+                    <a class="btn btn-sm btn-info" href="/portfolio/books_app/authors">Back to list</a>
+            {% endif %}
+                </div>
+                <h5>Books: </h5>
+            {% if not author_book_list %}
+                <span class="align-baseline mr-1 mb-1 p-2 small">No books available yet</span>
+            {% else %}
+                {% for book in author_book_list %}
+                <span class="align-baseline mr-1 mb-1 p-2"><a href="/portfolio/books_app/books/{{ book.id }}"><i class="fas fa-book"></i> {{ book.title + ' '}}</a></span>
+                {% endfor %}
+            {% endif %}
+            
+                <hr>
+                <form action="/portfolio/books_app/add_book_to_author" method="POST">
+                    <label for="author_id">Add Book to Book's List</label>
+                    <select class="form-control mb-4" name="book_id">
+                {% for book in book_list %}
+                    <option value="{{ book.id }}">{{ book.title }}</option>
+                {% endfor %}
+                    </select>
+                    <input type="hidden" name="author_id" value="{{ author.id }}">
+                {% if 'user_id' in session %}
+                    <input class="btn btn-info" type="submit" value="Add">
+                {% else %}
+                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Only logged in users can add items to the list">
+                        <button style="pointer-events: none;" type="button" class="btn btn-info" disabled>Add</button>
+                    </span>
+                {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
