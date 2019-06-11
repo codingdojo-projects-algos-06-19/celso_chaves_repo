@@ -7,7 +7,12 @@ from server.models.ideas_likes import likes_ideas_table
 
 def ideas():
     if 'user_id' in session:
-        return render_template('ideas.html', 
+        user_ideas_list = Idea.query.join(User, User.id==Idea.user_id) 
+        for a in user_ideas_list:
+            print("USER_IDEAS_LIST: ", a.content)
+        
+        return render_template('ideas.html',
+        user_ideas_list=user_ideas_list, 
         ideas_list=Idea.query.order_by(desc(Idea.id)), 
         user_list=User.query.all(), 
         logged_in_user=User.query.get(session['user_id'])
@@ -32,7 +37,8 @@ def create():
         return redirect('/portfolio/ideas_app/bright_ideas')
     
     new_idea = Idea(
-        content = request.form['content']
+        content = request.form['content'],
+        user_id = request.form['user_id']
     )
     db.session.add(new_idea)
     db.session.commit()

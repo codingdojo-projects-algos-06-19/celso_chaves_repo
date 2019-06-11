@@ -73,7 +73,7 @@
                     {% if 'user_id' in session %}
                         <li class="nav-item">
                             <a class="nav-link waves-effect waves-light" href="/portfolio/my_account">
-                                My Account
+                                Hi {{ logged_in_user.first_name }}!
                             </a>
                         </li>
                         <li class="nav-item dropdown">
@@ -92,7 +92,7 @@
                         </li>
                     {% else %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink2" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">Demo Apps</a>
                                 <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
                                     <a class="dropdown-item" href="/portfolio/books_app/books">Books & Authors</a>
