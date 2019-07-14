@@ -47,14 +47,15 @@ $(document).ready(function(){
             url: '/portfolio/user/update/' + CURRENT_USER_ID,
             method: 'POST',
             data: $('#user-update-form').serialize(),
-            success: function(alerts) {
+            success: function(data) {
                 console.log('SUCCESS')
-                // $('.btn-profile-update').html('<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Saving...').addClass('disabled');
-                $("#alerts-info").html(alerts)
+                $('.btn-profile-update').html('<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Saving...').addClass('disabled');
+                setTimeout("window.location.replace('/portfolio/user/my_account');",3000);
+                // $("#alerts-info").html('<span>Your account has been updated!</span>')
             },
             error: function(data) {
                 console.log('ERROR')
-                $("#alerts").html(data.responseText)
+                $("#alerts-info").html(data.responseText)
             }
         })
     });

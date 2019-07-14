@@ -22,7 +22,7 @@ def wishes():
         flash('Please login to view your wishes!')
         return redirect('/portfolio/login')
 
-def new_wish():
+def new():
     if 'user_id' in session:
         logged_in_user = User.query.get(session['user_id'])
         return render_template(
@@ -35,7 +35,7 @@ def new_wish():
         flash('Please login or register to add wishes!')
         return redirect('/portfolio/login')
 
-def create_wish():
+def create():
     alerts = []
     if 'user_id' not in session:
         flash(Markup('Only registerd users can make a wish!<br /><img src="/static/img/no-no.gif">'))
@@ -70,7 +70,7 @@ def create_wish():
     flash('Your wish has been added to the list!')
     return redirect('/portfolio/wishes_app/wishes')
 
-def edit_wish(id):
+def edit(id):
     if 'user_id' in session:
         get_wish = Wish.query.get(id)
         return render_template('edit_wish.html', 
@@ -81,7 +81,7 @@ def edit_wish(id):
     else:
         return redirect('/portfolio/wishes_app/wishes')
 
-def update_wish(id):
+def update(id):
     alerts = []
     if len(request.form['title']) < 3:
         alerts.append('A wish must consist of at least 3 characters!')
@@ -101,14 +101,14 @@ def update_wish(id):
     flash('Your wish has been updated!')
     return redirect('/portfolio/wishes_app/wishes')
 
-def delete_wish(wish_id):
+def delete(id):
     wish_to_delete = Wish.query.get(id)
     db.session.delete(wish_to_delete)
     db.session.commit()
     flash('Your wish has been deleted!')
     return redirect('/portfolio/wishes_app/wishes')
 
-def grant_wish(id):
+def grant(id):
     if 'user_id' not in session:
         flash(Markup('Only registerd users can grant a wish!<br /><img src="/static/img/no-no.gif">'))
         return redirect('/portfolio/wishes_app/wishes')

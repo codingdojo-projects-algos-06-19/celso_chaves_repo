@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, url_for, session, flash
-from config import app
+from config import app, db
 from server.models.users import User
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
@@ -88,8 +88,76 @@ def process_login():
     flash('The email or password is incorrect!')
     return redirect('/portfolio/user/login')
 
-def update():
-    return redirect('/portfolio/user/login')
+def update(id):
+    alerts = []
+    current_user = User.query.get(session['user_id'])
+    print('CURRENT_USER: ', current_user.email)
+    # Check if email is different from database
+    if current_user.email == request.form['email']:
+        if len(request.form['fname']) < 1:
+            alerts.append('The first name field is required!')
+        elif request.form['fname'].isalpha() != True:
+            alerts.append('Only letters are allowed in the first name field!')
+
+        if len(request.form['lname']) < 1:
+            alerts.append('The last name field is required!')
+        elif request.form['lname'].isalpha() != True:
+            alerts.append('Only letters are allowed in the last name field!')
+
+        if len(request.form['password']) > 0:
+            if len(request.form['password']) < 8:
+                alerts.append('The password needs to be at least 8 characters')
+            elif not re.match(r"^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$])[\w\d@#$]{6,12}$", request.form['password']):
+                alerts.append('The confirmed password must contain a number, a special character, upper and lowercase!')
+
+            if len(request.form['password2']) < 1:
+                alerts.append('The confirmed password cannot be blank!')
+
+            if request.form['password'] != request.form['password2']:
+                alerts.append('Both passwords should match')
+    else:
+        get_user_by_email = User.query.filter_by(email=request.form['email']).first()
+        if get_user_by_email != None:
+            alerts.append('This email address already exists! Please use a different one.')
+        else:
+            if len(request.form['fname']) < 1:
+                alerts.append('The first name field is required!')
+            elif request.form['fname'].isalpha() != True:
+                alerts.append('Only letters are allowed in the first name field!')
+
+            if len(request.form['lname']) < 1:
+                alerts.append('The last name field is required!')
+            elif request.form['lname'].isalpha() != True:
+                alerts.append('Only letters are allowed in the last name field!')
+                
+            if len(request.form['email']) < 1:
+                alerts.append('The email address field is required!')
+            elif not EMAIL_REGEX.match(request.form['email']):
+                alerts.append('Invalid email address!')
+
+    if len(alerts) > 0:
+        if len(alerts) == 5:
+            flash('All fields are required!')
+            return redirect('/portfolio/user/my_account')
+            # return render_template('/partials/alerts.html'), 500   
+        else:
+            for alert in alerts:
+                flash(alert)
+            # return redirect('/portfolio/user/my_account') 
+            return render_template('partials/alerts.html'), 500
+    else:
+        user = User.query.get(id)
+        user.first_name = request.form['fname']
+        user.last_name = request.form['lname']
+        user.email = request.form['email']
+
+        db.session.commit()
+        alerts.append('Your account has been updated!')
+        for alert in alerts:
+            flash(alert)
+            print('ALERTS: ', alert)
+        # return redirect('/portfolio/user/my_account')
+        return render_template('partials/alerts-info.html', alerts=alerts)
 
 def welcome():
     if 'user_id' not in session:

@@ -53,7 +53,7 @@
             </div>
         </div> 
     </div>
-    <div class="container">
+    <!-- <div class="container">
         <div class="row wow fadeIn">
             <div class="col-sm-12 mt-5">
                 <h1 class="text-center mb-3">Granted Wishes</h1>
@@ -93,7 +93,7 @@
                 </div>
             </div>
         </div> 
-    </div>
+    </div> -->
     {% for wish in wish_list %}
     <div class="modal fade right" id="wish-delete-modal-{{ wish.id }}" tabindex="-1" role="dialog" aria-labelledby="wish-delete-modal-Label-{{ wish.id }}" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -109,7 +109,7 @@
                 </div>
                 <div class="modal-footer">
                     <form action="/portfolio/wishes_app/wish/delete/{{ wish.id }}" method="POST">
-                        <input type="hidden" name="id" value="wish.id">
+                        <!-- <input type="hidden" name="id" value="wish.id"> -->
                         <button type="submit" class="btn btn-warning" data-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>

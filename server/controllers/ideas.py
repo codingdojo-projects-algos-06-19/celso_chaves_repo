@@ -23,23 +23,31 @@ def ideas_list():
         logged_in_user=User.query.get(session['user_id'])
         )
     else:
+        flash('Register or login to view ideas!')
         return render_template('login_register.html')
 
 def ideas():
     if 'user_id' in session:
+        logged_in_user=User.query.get(session['user_id'])
+        ideas = Idea.query.order_by(desc(Idea.id))
         user_ideas_list = Idea.query.join(User, User.id==Idea.user_id) 
         current_idea = Idea.query.get(1)
-        for a in user_ideas_list:
-            print("USER_IDEAS_LIST: ", a.content)
+        # for idea in ideas:
+        #     print(idea.user_id.liked_ideas)
+        # liked_ideas = logged_in_user.liked_ideas
+        # print(liked_ideas)
+        # for a in user_ideas_list:
+        #     print("USER_IDEAS_LIST: ", a.content)
         
         return render_template('ideas.html',
         idea=current_idea,
         user_ideas_list=user_ideas_list, 
-        ideas_list=Idea.query.order_by(desc(Idea.id)), 
+        ideas_list=ideas, 
         user_list=User.query.all(), 
-        logged_in_user=User.query.get(session['user_id'])
+        logged_in_user=logged_in_user
         )
     else:
+        flash('Register or login to view ideas!')
         return render_template('login_register.html')
 
 def create():
