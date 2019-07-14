@@ -1,0 +1,30 @@
+
+{% for idea in ideas_list %}
+<div class="row mt-5 wow fadeIn">
+    <div class="col-lg-5 col-xl-4 mb-2">
+        <p>Date Added: {{ idea.created_at }}</p>
+        <p>Liked by:</p>
+        <!-- <div class="rounded z-depth-1">
+            <img src="https://mdbootstrap.com/wp-content/uploads/2017/11/brandflow-tutorial-fb.jpg" class="img-fluid" alt="">
+        </div> -->
+    </div>
+    <div class="col-lg-7 col-xl-7 ml-xl-4 ">
+        <h3 class="mb-3 font-weight-bold dark-grey-text">
+            <span><i class="fas fa-user mr-1"></i>{{ idea.first_name }} says: </span>
+        </h3>
+        <p class="grey-text border p-5">{{ idea.content }}</p>
+        <div class="btn-group mb-5" role="group" aria-label="actions">
+            {% if 'user_id' in session and session['user_id'] == idea.user_id %}
+            <button id="modalActivate{{ idea.id }}" type="button" class="btn btn-danger btn-sm px-2 mr-2" data-toggle="modal" data-target="#idea-delete-modal-{{ idea.id }}">Remove </button>
+            <input type="hidden" name="id" value="{{ idea.id }}">
+            <button id="modalActivate2{{ idea.id }}" class="btn btn-primary btn-sm px-2 mr-2" type="button" data-toggle="modal" data-target="#idea-edit-modal-{{ idea.id }}">Edit </button>
+            {% endif %}
+            <form action="/portfolio/ideas_app/bright_ideas/like/<id>" method="POST">
+                <input type="hidden" name="ideas_id" value="{{ idea.id }}">
+                <button type="submit" class="btn btn-success btn-sm px-2 mr-2"><i class="fa fa-heart fa-sm mr-1"></i>Like </button>
+            </form>
+        </div>
+    </div>
+</div>
+<hr class="mb-5">
+{% endfor %}

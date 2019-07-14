@@ -1,42 +1,32 @@
 {% extends './layout.html' %}
 {% block title %}Idea's List - Demo App{% endblock %}
 {% block body %}
+<script>
+        var CURRENT_IDEA_ID = {{ idea.id }}
+    </script>
     <div class="container pt-3">
-        <div class="row wow fadeIn text-center">
-            <div class="col-sm-12 mt-5">
-                <h1>Hi {{ logged_in_user.first_name }}!</h1>
-                <form action="/portfolio/ideas_app/bright_ideas/add" method="POST">
-                    <div class="form-row mb-4">
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control mt-2" name="content" placeholder="Post something witty here...">
-                            <input type="hidden" name="user_id" value="{{ session['user_id'] }}">
-                        </div>
-                        <div class="col-sm-2">
-                            <button class="btn btn-info" type="submit">Idea!</button> 
-                        </div>
-                    </div>
-                </form>
-                <h2 class="text-center mb-3">Idea's List</h2>
-                <div style="overflow: auto">
-                    <div class="text-center mb-4">
-                    {% for idea in ideas_list %}
-                        <p><span>{{ user_ideas_list.user_id }} says: </span>{{ idea.content }}</p>
-                        <div class="btn-group mb-5" role="group" aria-label="actions">
-                            {% if 'user_id' in session %}
-                            <button id="modalActivate{{ idea.id }}" type="button" class="btn btn-danger btn-sm px-2 mr-2" data-toggle="modal" data-target="#idea-delete-modal-{{ idea.id }}">Remove </button>
-                            <input type="hidden" name="id" value="{{ idea.id }}">
-                            <button id="modalActivate2{{ idea.id }}" class="btn btn-primary btn-sm px-2 mr-2" type="button" data-toggle="modal" data-target="#idea-edit-modal-{{ idea.id }}">Edit </button>
-                            <form action="/portfolio/ideas_app/bright_ideas/like/<id>" method="POST">
-                                <input type="hidden" name="ideas_id" value="{{ idea.id }}">
-                                <button type="submit" class="btn btn-success btn-sm px-2 mr-2">Like </button>
+        <div class="row wow fadeIn text-center mb-5">
+            <div class="col-sm-12 mt-4">
+                <div class="inline">
+                    <h3>Hi <span id="user-first-name"></span>{{ logged_in_user.first_name }}!</h3>
+                    <button class="btn btn-info" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="addUserCollapse">Add idea<i class="fas fa-angle-down ml-2 "></i></button>
+                </div>
+                <div class="collapse multi-collapse" id="addUserCollapse">
+                    <div class="flex-center">
+                        <div class="col-sm-6">
+                            <form id="idea-create-form" action="/portfolio/ideas_app/bright_ideas/create" method="POST">
+                                <div class="row mb-4">
+                                    <textarea type="text" class="form-control mt-2" name="content" rows="6" placeholder="Post something witty here..."></textarea>
+                                    <input type="hidden" name="user_id" value="{{ session['user_id'] }}">
+                                    <button class="btn btn-info" type="submit">Submit</button> 
+                                </div>
                             </form>
-                            {% endif %}
                         </div>
-                    {% endfor %}
                     </div>
                 </div>
             </div>
         </div> 
+        <div id="ideas-list"></div>
     </div>
 
     {% for idea in ideas_list %}

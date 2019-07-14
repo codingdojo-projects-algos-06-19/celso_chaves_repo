@@ -20,6 +20,11 @@
         <meta name="theme-color" content="#ffffff">
         {% block head %}{% endblock %}
         <title>{% block title %}{% endblock %}</title>
+        {% if 'user_id' in session %}
+            <script>
+                var CURRENT_USER_ID = {{ session['user_id'] }}
+            </script>
+        {% endif %}
     </head>
     <body>
         <nav class="navbar sticky-top navbar-expand-lg navbar-dark scrolling-navbar bg-dark">
@@ -64,7 +69,7 @@
         </nav>
         <nav class="mb-1 navbar navbar-expand-lg navbar-dark info-color">
             <div class="container">
-                <a class="navbar-brand" href="/portfolio/books_app/books">Demo App</a>
+                <a class="navbar-brand" href="/portfolio">Demo Apps</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4" aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -72,8 +77,8 @@
                     <ul class="navbar-nav ml-auto">
                     {% if 'user_id' in session %}
                         <li class="nav-item">
-                            <a class="nav-link waves-effect waves-light" href="/portfolio/my_account">
-                                Hi {{ logged_in_user.first_name }}!
+                            <a class="nav-link waves-effect waves-light" href="/portfolio/user/my_account">
+                                Hi <span id="user-first-name"></span>
                             </a>
                         </li>
                         <li class="nav-item dropdown">
@@ -86,7 +91,7 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link waves-effect waves-light" href="/portfolio/logout">   
+                            <a class="nav-link waves-effect waves-light" href="/portfolio/user/logout">   
                                 Logout <i class="fas fa-sign-out-alt"></i>
                             </a>
                         </li>
@@ -101,12 +106,12 @@
                                 </div>
                             </li>
                         <li class="nav-item">
-                            <a class="nav-link waves-effect waves-light" href="/portfolio/register">   
+                            <a class="nav-link waves-effect waves-light" href="/portfolio/user/register">   
                                 Register
                             </a>
                         </li>
                             <li class="nav-item">
-                            <a class="nav-link waves-effect waves-light" href="/portfolio/login">   
+                            <a class="nav-link waves-effect waves-light" href="/portfolio/user/login">   
                                 Login <i class="fas fa-sign-in-alt"></i>
                             </a> 
                         </li>
@@ -133,6 +138,7 @@
         </div>
         {% endif %}
     {% endwith %}
+    <div id="alerts"></div>
         {% block body %}{% endblock %}
         <footer class="page-footer text-center font-small">
             <div class="pt-4">
@@ -153,6 +159,7 @@
         <script type="text/javascript" src="{{ url_for('static',filename='js/popper.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static',filename='js/mdb.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static',filename='js/scripts.js') }}"></script>
         <script>
             new WOW().init();
             $(document).ready (function(){

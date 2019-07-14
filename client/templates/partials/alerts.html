@@ -1,0 +1,18 @@
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="flashes">
+    <div class="error mb-0">
+        <nav class="alert alert-info alert-dismissible wow fadeIn show text-center mb-0" role="alert">
+            <ul class="list-unstyled">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </nav>
+    </div>
+</div>
+{% endif %}
+{% endwith %}

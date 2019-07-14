@@ -10,15 +10,15 @@ def login_register():
     if 'user_id' not in session:
         return render_template('login_register.html')
     else:
-        return redirect('/portfolio/register')
+        return redirect('/portfolio/user/register')
 
 def register():
     if 'user_id' not in session:
         return render_template('register.html')
     else:
-        return redirect('/portfolio/register')
+        return redirect('/portfolio/user/register')
 
-def create_user():
+def create():
     # @A1aaaaa
     alerts = User.validate(request.form)
     if len(alerts) > 0:
@@ -26,15 +26,15 @@ def create_user():
         if len(alerts) == 5:
             print(len(alerts))
             flash('All fields are required!')
-            return redirect('/portfolio/login_register')    
+            return redirect('/portfolio/user/register')    
         else:
             print(len(alerts))
             for alert in alerts:
                 flash(alert)
-            return redirect('/portfolio/login_register') 
+            return redirect('/portfolio/user/register') 
     else:
         User.create(request.form)
-        return redirect('/portfolio/thankyou')
+        return redirect('/portfolio/user/thankyou')
 
 def thankyou():
     if 'user_id' not in session:
@@ -54,7 +54,7 @@ def login():
 
 def my_account():
     #get_user_by_id = User.query.filter_by(id=session['user_id']).first()
-    #return redirect('/portfolio/wishes_app/wishes')
+    #return redirect('/portfolio/user/wishes_app/wishes')
     if 'user_id' not in session:
         return render_template('login.html', 
         user_list=User.query.all())
@@ -63,7 +63,7 @@ def my_account():
         user_list=User.query.all(), 
         logged_in_user=User.query.get(session['user_id']))
 
-def login_user():
+def process_login():
     alerts=[]
     # @A1aaaaa
     if len(request.form['email']) < 1:
@@ -76,7 +76,7 @@ def login_user():
     if len(alerts) > 0:
         for alert in alerts:
             flash(alert)
-        return redirect('/portfolio/login_register')
+        return redirect('/portfolio/user/login_register')
 
     get_user_by_email = User.query.filter_by(email=request.form['email']).first()
     print('get_user_by_email', get_user_by_email)
@@ -84,22 +84,32 @@ def login_user():
         user = get_user_by_email
         if bcrypt.check_password_hash(user.password,request.form['password']):
             session['user_id'] = user.id
-            return redirect('/portfolio/welcome')
+            return redirect('/portfolio/user/welcome')
     flash('The email or password is incorrect!')
-    return redirect('/portfolio/login')
+    return redirect('/portfolio/user/login')
 
-def welcome_user():
+def update():
+    return redirect('/portfolio/user/login')
+
+def welcome():
     if 'user_id' not in session:
-       return redirect('/portfolio/login')
+       return redirect('/portfolio/user/login')
     print('session user id: ', session['user_id'])
     return render_template('welcome.html', 
     user_list=User.query.all(), 
     logged_in_user=User.query.get(session['user_id']))
 
-def logout_user():
+def logout():
    session.pop('user_id', None)
    flash('Thanks for using our site!')
-   return redirect(url_for('login'))
+   return redirect(url_for('users:login'))
+
+def first_name():
+    if 'user_id' not in session:
+        return 'GUEST'
+    else:
+        user = User.query.get(session['user_id'])
+        return user.first_name
 
 
 

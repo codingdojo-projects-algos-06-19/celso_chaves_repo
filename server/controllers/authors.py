@@ -80,7 +80,7 @@ def add_author_to_book():
     except IntegrityError:
         db.session.rollback()
         flash("The author already exists in the book's author's list!")
-        return redirect('/portfolio/books_app/books'+str(existing_book.id)+'')
+        return redirect('/portfolio/books_app/books/'+str(existing_book.id)+'')
 
 def edit(id):
     if 'user_id' in session:

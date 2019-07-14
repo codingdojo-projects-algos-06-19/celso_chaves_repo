@@ -7,12 +7,12 @@
                 <img src="https://picsum.photos/600/400" class="img-fluid z-depth-1-half" alt="">
             </div>
             <div class="col-md-6 mb-4">
-                <h3 class="h3 mb-3">{{ author.first_name + ' ' + author.last_name }}</h3>
+                <h3 class="h3 mb-3"><span class="small">Author Name: </span>{{ author.first_name + ' ' + author.last_name }}</h3>
                 <h6 class="small mb-3">Author id: {{ author.id }}</h6>
                 <p>{{ author.notes }}</p>
                 <div class="mb-4">
             {% if 'user_id' in session %}
-                    <a class="btn btn-sm btn-primary" href="/portfolio/books_app/authors/edit/{{ author.id }}">Edit </a><a class="btn btn-sm btn-info" href="/portfolio/books_app/authors">Back to list</a>
+                    <a class="btn btn-sm btn-primary" href="/portfolio/books_app/authors/edit/{{ author.id }}">Edit </a><a class="btn btn-sm btn-info" href="/portfolio/books_app/authors">Back to Author list</a>
             {% else %}
                     <a class="btn btn-sm btn-info" href="/portfolio/books_app/authors">Back to list</a>
             {% endif %}

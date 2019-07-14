@@ -1,16 +1,19 @@
 from sqlalchemy.sql import func
 from config import app, db, request, re, session
 from flask_bcrypt import Bcrypt
+from server.models.ideas_likes import likes_ideas_table
 bcrypt = Bcrypt(app)
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$') 
 
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
+    # username = db.Column(db.String(45))
     first_name = db.Column(db.String(45))
     last_name = db.Column(db.String(45))
     email = db.Column(db.String(100))
     password = db.Column(db.String(255))
+    ideas_this_user_likes = db.relationship('Idea', secondary=likes_ideas_table)
     created_at = db.Column(db.DateTime, server_default=func.now())        # notice the extra import statement above
     updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
 

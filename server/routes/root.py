@@ -7,3 +7,4 @@ def page_not_found(error):
 
 app.add_url_rule('/portfolio', view_func=root.portfolio)
 app.add_url_rule('/', view_func=root.index)
+app.add_url_rule('/portfolio/alerts', view_func=root.alerts)

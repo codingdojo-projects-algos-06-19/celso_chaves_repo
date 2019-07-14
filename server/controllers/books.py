@@ -18,7 +18,7 @@ def books():
             book_list=Book.query.order_by(desc(Book.id))
         )
 
-def create_book():
+def create():
     alerts = []
     if 'user_id' not in session:
         flash(Markup('Only registerd users can add books!<br /><img src="/static/img/no-no.gif">'))
@@ -44,22 +44,21 @@ def create_book():
     flash('The book has been added!')
     return redirect('/portfolio/books_app/books')
 
-def view_book(id):
-    authors_in_book = db.session.query(Book).filter_by(id=id).one()
+def view(id):
     get_book = Book.query.get(id)
     author_list = Author.query.all()
+    authors_in_book = get_book.authors_and_books
+    print(authors_in_book)
 
     if 'user_id' in session:
         return render_template('book_view.html', book=get_book, authors=author_list, 
         user_list=User.query.all(), 
-        logged_in_user=User.query.get(session['user_id']),
-        authors_in_book=authors_in_book)
+        logged_in_user=User.query.get(session['user_id']))
     else:
         return render_template(
             'book_view.html',
             book=get_book, 
-            authors=author_list,
-            authors_in_book=authors_in_book)
+            authors=author_list)
 
 def add_book_to_author():
     existing_author = Author.query.get(request.form['author_id'])
@@ -78,7 +77,7 @@ def add_book_to_author():
         flash("The book already exists in the author's book's list!")
         return redirect('/portfolio/books_app/authors/'+str(existing_author.id)+'')
 
-def edit_book(id):
+def edit(id):
     if 'user_id' in session:
         get_book = Book.query.get(id)
         return render_template('edit_book.html', book=get_book, user_list=User.query.all(), logged_in_user=User.query.get(session['user_id'])
@@ -86,7 +85,7 @@ def edit_book(id):
     else:
         return redirect('/portfolio/books_app/books')
 
-def update_book(id):
+def update(id):
     alerts = []
     if len(request.form['title']) < 1:
         alerts.append('Please enter a title!')
@@ -106,7 +105,7 @@ def update_book(id):
     flash('The book has been updated!')
     return redirect('/portfolio/books_app/books')
 
-def delete_book(id):
+def delete(id):
     book_count = Book.query.count()
     if book_count <= 1:
         flash(Markup('You cannot delete the last book in the database!<br /><img src="/static/img/no-no.gif">'))

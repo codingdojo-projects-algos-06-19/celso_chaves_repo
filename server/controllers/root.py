@@ -13,3 +13,7 @@ def index():
         'index.html',
         book_list=Book.query.all(), user_list=User.query.all()
     )
+def alerts():
+    return render_template(
+        'partials/alerts.html'
+    )
